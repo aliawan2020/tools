@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Tool Hub</title>
+    <title>FIXDO - Multi-Tool Web Platform</title>
     <style>
         /* CSS Reset */
         * {
@@ -25,15 +25,61 @@
         /* Header Styling */
         header {
             background-color: #2B2D42;
-            padding: 2rem 1rem;
+            padding: 1.5rem 1rem;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        header h1 {
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
             font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
             color: #FFD700;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #EAEAEA;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            color: #FFD700;
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+
+        .contact-email {
+            margin-top: 1rem;
+            color: #FFD700;
+            font-size: 0.9rem;
         }
 
         /* Main Content Styling */
@@ -43,10 +89,31 @@
             padding: 0 1rem;
         }
 
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #FFD700;
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #FFD700;
+        }
+
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
+            margin-bottom: 3rem;
         }
 
         /* Tool Card Styling */
@@ -89,13 +156,14 @@
             cursor: pointer;
             font-weight: bold;
             text-decoration: none;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
             text-align: center;
             width: fit-content;
         }
 
         .btn:hover {
             background-color: #E6C200;
+            transform: scale(1.05);
         }
 
         .tool-card:hover .btn {
@@ -103,104 +171,256 @@
             color: #FFD700;
         }
 
+        /* Blog Section Styling */
+        .blog-section {
+            margin: 4rem 0;
+        }
+
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .blog-card {
+            background-color: #3A3D5B;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.2);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(255, 215, 0, 0.3);
+        }
+
+        .blog-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #FFD700;
+        }
+
+        .blog-meta {
+            color: #AAAAAA;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+        }
+
+        .blog-excerpt {
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #E6C200;
+            gap: 0.5rem;
+        }
+
+        .read-more::after {
+            content: '→';
+            transition: all 0.3s ease;
+        }
+
         /* Footer Styling */
         footer {
             background-color: #2B2D42;
             text-align: center;
-            padding: 1.5rem;
+            padding: 2rem;
             margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            color: #EAEAEA;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: #FFD700;
+            transform: translateY(-2px);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .tools-grid {
+            .tools-grid, .blog-posts {
                 grid-template-columns: 1fr;
             }
 
-            header h1 {
+            .logo {
                 font-size: 2rem;
+            }
+
+            nav ul {
+                gap: 1rem;
             }
         }
 
         @media (max-width: 480px) {
-            .tool-card {
+            .tool-card, .blog-card {
                 padding: 1rem;
             }
 
-            .tool-card h2 {
+            .tool-card h2, .blog-title {
                 font-size: 1.3rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Multi Tool Hub</h1>
-        <p>All your essential tools in one place</p>
+        <div class="header-content">
+            <div class="logo">FIXDO</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#tools">Tools</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="contact-email">Contact: alee.awanynot@gmail.com</div>
+        </div>
     </header>
 
     <div class="container">
-        <div class="tools-grid">
-            <!-- Image Converter Tool -->
-            <div class="tool-card">
-                <h2>Image Converter</h2>
-                <p>Convert your images between different formats like JPG, PNG, WEBP, and more with just a few clicks.</p>
-                <button class="btn" onclick="redirectToTool('Image Converter')">Use Tool</button>
-            </div>
+        <section id="tools">
+            <h2 class="section-title">Our Tools</h2>
+            <div class="tools-grid">
+                <!-- Image Converter Tool -->
+                <div class="tool-card">
+                    <h2>Image Converter</h2>
+                    <p>Convert between JPG, PNG, WEBP, and other formats with our fast, high-quality conversion tool. Perfect for web developers and content creators.</p>
+                    <button class="btn" onclick="redirectToTool('Image Converter')">Use Tool</button>
+                </div>
 
-            <!-- Image Compressor Tool -->
-            <div class="tool-card">
-                <h2>Image Compressor</h2>
-                <p>Reduce the file size of your images without significant quality loss, perfect for web optimization.</p>
-                <button class="btn" onclick="redirectToTool('Image Compressor')">Use Tool</button>
-            </div>
+                <!-- Image Compressor Tool -->
+                <div class="tool-card">
+                    <h2>Image Compressor</h2>
+                    <p>Reduce image file sizes by up to 80% without noticeable quality loss. Optimize your website's performance with our smart compression.</p>
+                    <button class="btn" onclick="redirectToTool('Image Compressor')">Use Tool</button>
+                </div>
 
-            <!-- Image Crop Tool -->
-            <div class="tool-card">
-                <h2>Image Crop</h2>
-                <p>Crop your images to the perfect size and aspect ratio for social media, websites, or personal use.</p>
-                <button class="btn" onclick="redirectToTool('Image Crop')">Use Tool</button>
-            </div>
+                <!-- Image Crop Tool -->
+                <div class="tool-card">
+                    <h2>Image Crop</h2>
+                    <p>Precisely crop images to any dimension or aspect ratio. Create perfect thumbnails, profile pictures, or social media assets.</p>
+                    <button class="btn" onclick="redirectToTool('Image Crop')">Use Tool</button>
+                </div>
 
-            <!-- Video Converter Tool -->
-            <div class="tool-card">
-                <h2>Video Converter</h2>
-                <p>Convert videos between different formats like MP4, AVI, MOV, and more with high quality output.</p>
-                <button class="btn" onclick="redirectToTool('Video Converter')">Use Tool</button>
-            </div>
+                <!-- Video Converter Tool -->
+                <div class="tool-card">
+                    <h2>Video Converter</h2>
+                    <p>Convert videos between MP4, AVI, MOV, and other popular formats. Adjust resolution and quality settings for optimal results.</p>
+                    <button class="btn" onclick="redirectToTool('Video Converter')">Use Tool</button>
+                </div>
 
-            <!-- Age Calculator Tool -->
-            <div class="tool-card">
-                <h2>Age Calculator</h2>
-                <p>Calculate your exact age in years, months, and days based on your birth date.</p>
-                <button class="btn" onclick="redirectToTool('Age Calculator')">Use Tool</button>
-            </div>
+                <!-- Age Calculator Tool -->
+                <div class="tool-card">
+                    <h2>Age Calculator</h2>
+                    <p>Calculate exact age in years, months, and days. Useful for applications, forms, or just satisfying your curiosity.</p>
+                    <button class="btn" onclick="redirectToTool('Age Calculator')">Use Tool</button>
+                </div>
 
-            <!-- EMI Calculator Tool -->
-            <div class="tool-card">
-                <h2>EMI Calculator</h2>
-                <p>Calculate your Equated Monthly Installments for loans with principal, interest rate, and tenure.</p>
-                <button class="btn" onclick="redirectToTool('EMI Calculator')">Use Tool</button>
-            </div>
+                <!-- EMI Calculator Tool -->
+                <div class="tool-card">
+                    <h2>EMI Calculator</h2>
+                    <p>Calculate monthly loan payments with our EMI calculator. Understand how interest rates and tenure affect your payments.</p>
+                    <button class="btn" onclick="redirectToTool('EMI Calculator')">Use Tool</button>
+                </div>
 
-            <!-- SIP Calculator Tool -->
-            <div class="tool-card">
-                <h2>SIP Calculator</h2>
-                <p>Calculate returns on your Systematic Investment Plan (SIP) investments with expected growth rate.</p>
-                <button class="btn" onclick="redirectToTool('SIP Calculator')">Use Tool</button>
-            </div>
+                <!-- SIP Calculator Tool -->
+                <div class="tool-card">
+                    <h2>SIP Calculator</h2>
+                    <p>Plan your investments with our SIP calculator. See how regular investments can grow over time with compound interest.</p>
+                    <button class="btn" onclick="redirectToTool('SIP Calculator')">Use Tool</button>
+                </div>
 
-            <!-- Audio Trim Tool -->
-            <div class="tool-card">
-                <h2>Audio Trim</h2>
-                <p>Trim your audio files to remove unwanted parts or create perfect sound clips for your projects.</p>
-                <button class="btn" onclick="redirectToTool('Audio Trim')">Use Tool</button>
+                <!-- Audio Trim Tool -->
+                <div class="tool-card">
+                    <h2>Audio Trim</h2>
+                    <p>Edit audio files by trimming unwanted sections. Create perfect sound clips for presentations, videos, or social media.</p>
+                    <button class="btn" onclick="redirectToTool('Audio Trim')">Use Tool</button>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <section class="blog-section" id="blog">
+            <h2 class="section-title">Latest Blog Posts</h2>
+            <div class="blog-posts">
+                <!-- Blog Post 1 -->
+                <article class="blog-card">
+                    <h3 class="blog-title">5 Essential Web Tools Every Developer Should Know</h3>
+                    <div class="blog-meta">
+                        <span>📅 May 15, 2023</span>
+                        <span>⏱️ 5 min read</span>
+                    </div>
+                    <p class="blog-excerpt">Discover the must-have web tools that can streamline your development workflow. From image optimization to code formatting, these tools will save you hours of work and improve your final product's quality. Learn how to integrate them into your daily routine...</p>
+                    <a href="#" class="read-more">Read more</a>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="blog-card">
+                    <h3 class="blog-title">How to Choose the Right Image Format for Your Website</h3>
+                    <div class="blog-meta">
+                        <span>📅 June 2, 2023</span>
+                        <span>⏱️ 4 min read</span>
+                    </div>
+                    <p class="blog-excerpt">JPG, PNG, WEBP, or AVIF? Each image format has its strengths and weaknesses. This comprehensive guide helps you understand when to use each format for optimal website performance and visual quality. Includes real-world examples and performance benchmarks...</p>
+                    <a href="#" class="read-more">Read more</a>
+                </article>
+            </div>
+        </section>
     </div>
 
-    <footer>
-        <p>&copy; 2023 Multi Tool Hub. All rights reserved.</p>
+    <footer id="contact">
+        <div class="footer-content">
+            <p class="copyright">&copy; 2023 FIXDO. All rights reserved.</p>
+            <p>Contact us at: alee.awanynot@gmail.com</p>
+            <div class="social-links">
+                <a href="#" class="social-icon">📱</a>
+                <a href="#" class="social-icon">💻</a>
+                <a href="#" class="social-icon">📧</a>
+                <a href="#" class="social-icon">🔗</a>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -210,6 +430,16 @@
             // In a real implementation, this would navigate to the actual tool page
             // window.location.href = `/tools/${toolName.toLowerCase().replace(' ', '-')}`;
         }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
     </script>
 </body>
 </html>
