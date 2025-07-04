@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIXDO – Video Converter</title>
+  <style>
+    body { background: #1E1E2F; color: #EAEAEA; margin:0; font-family:sans-serif; }
+    .container { max-width:800px; margin:2rem auto; padding:2rem; background:#2B2D42; border-radius:10px; }
+    h1 { color:#FFD700; text-align:center; }
+    .controls { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin:1rem 0; }
+    input[type="file"], select, button {
+      padding:.6rem; border:none; border-radius:5px; font-size:1rem;
+    }
+    input[type="file"] { background:#FFD700; color:#1E1E2F; cursor:pointer; }
+    select, button { background:#3A3D5B; color:#EAEAEA; }
+    button { background:#FFD700; color:#1E1E2F; font-weight:bold; cursor:pointer; transition:background-color .3s; }
+    button:hover { background:#E6C200; }
+    video { width:100%; margin-top:1rem; border-radius:5px; background:#000; }
+    .message { text-align:center; color:#FFD700; margin:1rem 0; display:none; }
+    .error { color:#FF4D4D; }
+    @media(max-width:600px){ .controls{flex-direction:column;align-items:center;} }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Video Converter Tool</h1>
+  <div class="controls">
+    <input type="file" id="inputVideo" accept="video/*" />
+    <select id="formatSelect">
+      <option value="">Select format</option>
+      <option>mp4</option><option>mov</option><option>wmv</option>
+      <option>avi</option><option>mkv</option><option>flv</option><option>webm</option>
+    </select>
+    <button id="convertBtn">Convert</button>
+  </div>
+  <div class="message" id="message">Processing...</div>
+  <div class="message error" id="error"></div>
+  <video id="outputVideo" controls style="display:none;"></video>
+  <div style="text-align:center; margin-top:1rem;">
+    <button id="downloadBtn" style="display:none;">Download Converted Video</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.0/dist/ffmpeg.min.js"></script>
+<script>
+  const { createFFmpeg, fetchFile } = FFmpeg;
+  const ffmpeg = createFFmpeg({ log: true });
+  const input = document.getElementById('inputVideo');
+  const format = document.getElementById('formatSelect');
+  const convertBtn = document.getElementById('convertBtn');
+  const message = document.getElementById('message');
+  const error = document.getElementById('error');
+  const output = document.getElementById('outputVideo');
+  const downloadBtn = document.getElementById('downloadBtn');
+  let convertedURL = '';
+
+  convertBtn.addEventListener('click', async () => {
+    error.style.display = 'none';
+    const file = input.files[0];
+    const fmt = format.value;
+
+    if (!file || !fmt) {
+      error.textContent = 'Please select a video file and target format.';
+      error.style.display = 'block';
+      return;
+    }
+
+    if (!ffmpeg.isLoaded()) {
+      message.textContent = 'Loading FFmpeg...';
+      message.style.display = 'block';
+      await ffmpeg.load();
+    }
+
+    message.textContent = 'Converting...';
+    message.style.display = 'block';
+
+    const name = file.name.split('.').slice(0, -1).join('.');
+    const inputName = `in.${file.name.split('.').pop()}`;
+    const outputName = `out.${fmt}`;
+
+    ffmpeg.FS('writeFile', inputName, await fetchFile(file));
+    await ffmpeg.run('-i', inputName, '-c:v', 'copy', '-c:a', 'copy', outputName);
+    const data = ffmpeg.FS('readFile', outputName);
+
+    const blob = new Blob([data.buffer], { type: `video/${fmt}` });
+    convertedURL = URL.createObjectURL(blob);
+
+    output.src = convertedURL;
+    output.style.display = 'block';
+    downloadBtn.style.display = 'inline-block';
+    downloadBtn.onclick = () => {
+      const a = document.createElement('a');
+      a.href = convertedURL;
+      a.download = `${name}.${fmt}`;
+      a.click();
+    };
+
+    message.style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
