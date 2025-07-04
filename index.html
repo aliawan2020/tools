@@ -3,7 +3,313 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIXDO - All-in-One Tool Hub</title>
+  <style>
+    /* Base Styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1e1e2f;
+      color: #eaeaea;
+    }
+
+    a {
+      color: #ffd700;
+      text-decoration: none;
+    }
+
+    .top-header {
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #1e1e2f;
+      padding: 1rem 2rem;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .logo .fix {
+      color: #1e1e2f;
+    }
+
+    .logo .do {
+      color: #2b2d42;
+    }
+
+    .nav-links a {
+      margin: 0 1rem;
+      font-weight: bold;
+      color: #1e1e2f;
+    }
+
+    .contact {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background-color: #2b2d42;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+
+    .hero-section h1 {
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .hero-section p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    .tool-icons {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+      gap: 1rem;
+    }
+
+    .tool-icon {
+      background-color: #3a3d5b;
+      color: #ffd700;
+      border-radius: 50%;
+      padding: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .search-bar {
+      width: 80%;
+      max-width: 400px;
+      padding: 0.8rem;
+      border-radius: 25px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    /* Tool Cards */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .tool-card {
+      background-color: #3a3d5b;
+      padding: 1.5rem;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.05);
+    }
+
+    .tool-card h2 {
+      margin-top: 0;
+    }
+
+    .tool-card button {
+      margin-top: 1rem;
+      background-color: #ffd700;
+      color: #1e1e2f;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .tool-card:hover {
+      background-color: #ffd700;
+      color: #1e1e2f;
+      box-shadow: 0 4px 16px rgba(255, 215, 0, 0.2);
+    }
+
+    .tool-card:hover h2,
+    .tool-card:hover p {
+      color: #1e1e2f;
+    }
+
+    .tool-card button:hover {
+      background-color: #e6c200;
+    }
+
+    /* Blogs */
+    .blogs {
+      padding: 2rem;
+      background-color: #2b2d42;
+      text-align: center;
+    }
+
+    .blogs h2 {
+      color: #ffd700;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-card {
+      background-color: #3a3d5b;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+    }
+
+    /* Footer */
+    footer {
+      background-color: #1e1e2f;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .tool-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        margin-top: 0.5rem;
+      }
+
+      .search-bar {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="logo"><span class="fix">FIX</span><span class="do">DO</span></div>
+    <nav class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Tools</a>
+      <a href="#">Contacts</a>
+    </nav>
+    <div class="contact">
+      <i class="fas fa-envelope"></i> <a href="mailto:alee.awanynot@gmail.com">alee.awanynot@gmail.com</a>
+    </div>
+  </header>
+
+  <!-- Hero / Second Header -->
+  <section class="hero-section">
+    <h1>Your Daily Tools. All in One Place</h1>
+    <p>Convert, Calculate, Compress and simplify your everyday tasks — fast & free</p>
+    <div class="tool-icons">
+      <div class="tool-icon"><i class="fas fa-image"></i></div>
+      <div class="tool-icon"><i class="fas fa-compress-alt"></i></div>
+      <div class="tool-icon"><i class="fas fa-crop"></i></div>
+      <div class="tool-icon"><i class="fas fa-video"></i></div>
+      <div class="tool-icon"><i class="fas fa-calculator"></i></div>
+    </div>
+    <input class="search-bar" type="text" placeholder="Search for a tool...">
+  </section>
+
+  <!-- Tool Cards Grid -->
+  <main class="tool-grid">
+    <!-- Repeatable Tool Card -->
+    <div class="tool-card">
+      <h2>Image Converter</h2>
+      <p>Convert your images to different formats in seconds.</p>
+      <button onclick="redirect('Image Converter')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Image Compressor</h2>
+      <p>Reduce image size without losing quality.</p>
+      <button onclick="redirect('Image Compressor')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Image Crop</h2>
+      <p>Crop images easily for social media or documents.</p>
+      <button onclick="redirect('Image Crop')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Video Converter</h2>
+      <p>Convert videos to your desired formats.</p>
+      <button onclick="redirect('Video Converter')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Age Calculator</h2>
+      <p>Quickly find out your exact age in detail.</p>
+      <button onclick="redirect('Age Calculator')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>EMI Calculator</h2>
+      <p>Calculate your monthly loan EMI with ease.</p>
+      <button onclick="redirect('EMI Calculator')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>SIP Calculator</h2>
+      <p>Estimate your SIP returns over time.</p>
+      <button onclick="redirect('SIP Calculator')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Audio Trim</h2>
+      <p>Cut and trim audio files easily online.</p>
+      <button onclick="redirect('Audio Trim')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>PDF Converter</h2>
+      <p>Convert files to and from PDF effortlessly.</p>
+      <button onclick="redirect('PDF Converter')">Use Tool</button>
+    </div>
+  </main>
+
+  <!-- Blog Section -->
+  <section class="blogs">
+    <h2>From Our Blog</h2>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <h3>5 Must-Have Tools for Students</h3>
+        <p>Explore essential tools that make studying and submitting assignments easier than ever.</p>
+      </div>
+      <div class="blog-card">
+        <h3>Image Compression Tips</h3>
+        <p>Learn how to reduce image sizes effectively without compromising quality.</p>
+      </div>
+      <div class="blog-card">
+        <h3>How SIP Calculators Help Plan Your Future</h3>
+        <p>Use SIP planning to prepare for retirement, children’s education, and more.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 FIXDO. All rights reserved. Crafted with ❤️ to simplify your day.</p>
+  </footer>
+
+  <script>
+    function redirect(toolName) {
+      alert(`Redirecting to ${toolName}`);
+    }
+  </script>
+</body>
+
+</html>
+="width=device-width, initial-scale=1.0" />
   <title>FIXDO - All-in-One Tool Hub</title>
   <style>
     /* Base Styles */
