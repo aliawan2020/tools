@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FIXDO – Audio Trim Tool</title>
+  <style>
+    body { background: #1E1E2F; color: #EAEAEA; margin: 0; font-family: sans-serif; }
+    .container { max-width:800px; margin:2rem auto; padding:1.5rem; background:#2B2D42; border-radius:10px; }
+    h1 { color:#FFD700; text-align:center; }
+    .controls, .buttons { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin:1rem 0; }
+    input[type="file"] { padding:.5rem; background:#FFD700; color:#1E1E2F; border:none; border-radius:5px; cursor:pointer;}
+    button { background:#FFD700; color:#1E1E2F; border:none; padding:.6rem 1.2rem; border-radius:5px; font-weight:bold; cursor:pointer; transition:background-color .3s;}
+    button:hover { background:#E6C200; }
+    #waveform { width:100%; height:150px; margin-top:1rem; }
+    .message { text-align:center; color:#FFD700; display:none; margin:1rem 0; }
+    .error { color:#FF4D4D; }
+    @media(max-width:600px){ .controls{flex-direction:column} }
+  </style>
+  <!-- Wavesurfer and Regions Plugin -->
+  <script src="https://unpkg.com/wavesurfer.js@6/dist/wavesurfer.min.js"></script>
+  <script src="https://unpkg.com/wavesurfer.js@6/dist/plugin/wavesurfer.regions.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h1>Audio Trim Tool</h1>
+  <div class="controls">
+    <input type="file" id="file" accept="audio/mp3,audio/wav,audio/aac,audio/ogg,audio/flac">
+    <button id="loadBtn">Load</button>
+    <button id="trimBtn">Trim</button>
+  </div>
+  <div id="waveform"></div>
+  <div class="message" id="msg">Processing...</div>
+  <div class="buttons" id="playDownload" style="display:none;">
+    <button id="playBtn">Play/Pause</button>
+    <button id="downloadBtn">Download</button>
+  </div>
+  <div class="message error" id="error"></div>
+</div>
+
+<script>
+  const fileInput = document.getElementById('file'),
+        loadBtn   = document.getElementById('loadBtn'),
+        trimBtn   = document.getElementById('trimBtn'),
+        playBtn   = document.getElementById('playBtn'),
+        downloadBtn = document.getElementById('downloadBtn'),
+        msg       = document.getElementById('msg'),
+        err       = document.getElementById('error'),
+        playDownload = document.getElementById('playDownload');
+
+  let wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+    waveColor: '#555',
+    progressColor: '#FFD700',
+    plugins: [WaveSurfer.regions.create({ dragSelection: { slop: 5 } })]
+  });
+
+  let selectedRegion = null;
+  let audioBlobUrl = '';
+
+  wavesurfer.on('region-created', region => {
+    if (selectedRegion) selectedRegion.remove();
+    selectedRegion = region;
+  });
+  wavesurfer.on('region-updated', region => selectedRegion = region);
+
+  loadBtn.onclick = () => {
+    err.style.display = 'none';
+    const file = fileInput.files[0];
+    if (!file) { showError('Please upload a file'); return; }
+
+    wavesurfer.loadBlob(file);
+    wavesurfer.on('ready', () => {
+      wavesurfer.clearRegions();
+      selectedRegion = null;
+      playDownload.style.display = 'none';
+    });
+  };
+
+  trimBtn.onclick = async () => {
+    if (!selectedRegion) return showError('Select a segment to trim');
+    msg.style.display = 'block';
+    const start = selectedRegion.start, end = selectedRegion.end;
+    const trimmedBuffer = await trimBuffer(wavesurfer.backend.buffer, start, end);
+    const trimmedBlob = bufferToWav(trimmedBuffer);
+    audioBlobUrl = URL.createObjectURL(trimmedBlob);
+    msg.style.display = 'none';
+    playDownload.style.display = 'flex';
+  };
+
+  playBtn.onclick = () => {
+    if (!audioBlobUrl) return;
+    wavesurfer.load(audioBlobUrl);
+    wavesurfer.on('ready', () => wavesurfer.playPause());
+  };
+
+  downloadBtn.onclick = () => {
+    if (!audioBlobUrl) return;
+    const a = document.createElement('a');
+    a.href = audioBlobUrl;
+    a.download = 'trimmed.wav';
+    a.click();
+  };
+
+  function showError(text) {
+    err.textContent = text;
+    err.style.display = 'block';
+    msg.style.display = 'none';
+  }
+
+  async function trimBuffer(buffer, start, end) {
+    const rate = buffer.sampleRate;
+    const startOffset = Math.floor(start * rate), endOffset = Math.floor(end * rate);
+    const length = endOffset - startOffset;
+    const newBuf = wavesurfer.backend.ac.createBuffer(buffer.numberOfChannels, length, rate);
+    for (let ch=0; ch<buffer.numberOfChannels; ch++) {
+      const data = buffer.getChannelData(ch).subarray(startOffset, endOffset);
+      newBuf.copyToChannel(data, ch);
+    }
+    return newBuf;
+  }
+
+  function bufferToWav(abuffer) {
+    const numCh = abuffer.numberOfChannels, len = abuffer.length * numCh * 2 + 44, buf = new ArrayBuffer(len), view = new DataView(buf);
+    function writeString(v, off){ for(let i=0;i<v.length;i++) view.setUint8(off+i, v.charCodeAt(i)); }
+    function writeInt16(off, v) { view.setInt16(off, v, true); }
+    function writeInt32(off, v) { view.setUint32(off, v, true); }
+    writeString('RIFF',0); writeInt32(4, len-8); writeString('WAVE',8);
+    writeString('fmt ',12); writeInt32(16,16); view.setUint16(20,1,true); view.setUint16(22,numCh,true);
+    writeInt32(24, abuffer.sampleRate,true); writeInt32(28, abuffer.sampleRate*numCh*2, true);
+    view.setUint16(32,numCh*2,true); view.setUint16(34,16,true);
+    writeString('data',36); writeInt32(40, len-44);
+    let offs = 44;
+    for (let i=0; i<abuffer.length; i++) {
+      for (let ch=0; ch<numCh; ch++) {
+        const s = Math.max(-1, Math.min(1, abuffer.getChannelData(ch)[i]));
+        writeInt16(offs, s<0 ? s*0x8000 : s*0x7FFF); offs += 2;
+      }
+    }
+    return new Blob([view], { type: 'audio/wav' });
+  }
+</script>
+</body>
+</html>
