@@ -1,778 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIXDO - Your All-in-One Tool Hub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* CSS Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        /* Body Styling */
-        body {
-            background-color: #f8f9fa;
-            color: #495057;
-            line-height: 1.6;
-        }
-
-        /* Top Header Styling */
-        .top-header {
-            background-color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(90deg, #2B2D42 0%, #FFD700 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: #495057;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: #2B2D42;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: #FFD700;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .contact-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #2B2D42;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .contact-info:hover {
-            color: #FFD700;
-        }
-
-        /* Main Header Styling */
-        .main-header {
-            background-color: #2B2D42;
-            padding: 4rem 2rem 3rem;
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-
-        .main-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .main-header p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .tool-icons {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 2.5rem 0;
-            flex-wrap: wrap;
-        }
-
-        .tool-icon {
-            width: 70px;
-            height: 70px;
-            background-color: #3A3D5B;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #FFD700;
-            font-size: 1.8rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .tool-icon:hover {
-            transform: translateY(-5px) scale(1.1);
-            background-color: #FFD700;
-            color: #2B2D42;
-            box-shadow: 0 6px 12px rgba(255, 215, 0, 0.4);
-        }
-
-        .search-bar {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding: 1.2rem 2rem;
-            border-radius: 50px;
-            border: none;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            padding-right: 3.5rem;
-        }
-
-        .search-bar input:focus {
-            outline: none;
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
-        }
-
-        .search-bar i {
-            position: absolute;
-            right: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #2B2D42;
-            font-size: 1.2rem;
-        }
-
-        /* Main Content Styling */
-        .container {
-            max-width: 1200px;
-            margin: 3rem auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-            color: #2B2D42;
-            font-size: 2rem;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: #FFD700;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        /* Tool Card Styling */
-        .tool-card {
-            background-color: #3A3D5B;
-            border-radius: 10px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            border: 2px solid transparent;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
-            background-color: #FFD700;
-            color: #1E1E2F;
-            border-color: #FFD700;
-        }
-
-        .tool-card:hover h2,
-        .tool-card:hover p {
-            color: #1E1E2F;
-        }
-
-        .tool-card h2 {
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-            color: #EAEAEA;
-        }
-
-        .tool-card p {
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-            color: #d1d1d1;
-        }
-
-        /* Button Styling */
-        .btn {
-            display: inline-block;
-            background-color: #FFD700;
-            color: #1E1E2F;
-            padding: 0.8rem 1.8rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            text-align: center;
-            width: fit-content;
-        }
-
-        .btn:hover {
-            background-color: #E6C200;
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .tool-card:hover .btn {
-            background-color: #1E1E2F;
-            color: #FFD700;
-        }
-
-        /* Blog Section Styling */
-        .blog-section {
-            margin: 5rem 0;
-        }
-
-        .blog-posts {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .blog-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            border: 1px solid #e9ecef;
-        }
-
-        .blog-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
-        }
-
-        .blog-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .blog-card:hover .blog-image {
-            transform: scale(1.05);
-        }
-
-        .blog-content {
-            padding: 1.5rem;
-        }
-
-        .blog-title {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: #2B2D42;
-        }
-
-        .blog-meta {
-            color: #6c757d;
-            font-size: 0.8rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .blog-excerpt {
-            margin-bottom: 1.5rem;
-            color: #6c757d;
-        }
-
-        .read-more {
-            color: #2B2D42;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .read-more:hover {
-            color: #FFD700;
-        }
-
-        .read-more i {
-            transition: all 0.3s ease;
-        }
-
-        .read-more:hover i {
-            transform: translateX(3px);
-        }
-
-        /* Footer Styling */
-        footer {
-            background-color: #2B2D42;
-            color: white;
-            padding: 4rem 2rem 2rem;
-            position: relative;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-
-        .footer-column h3 {
-            color: #FFD700;
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: #FFD700;
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-column a {
-            color: #adb5bd;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .footer-column a:hover {
-            color: #FFD700;
-            transform: translateX(5px);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #3A3D5B;
-            color: #adb5bd;
-            font-size: 0.9rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .social-links a {
-            color: white;
-            background-color: #3A3D5B;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background-color: #FFD700;
-            color: #2B2D42;
-            transform: translateY(-3px);
-        }
-
-        .newsletter {
-            margin-top: 1.5rem;
-        }
-
-        .newsletter input {
-            width: 100%;
-            padding: 0.8rem;
-            border-radius: 5px;
-            border: none;
-            margin-bottom: 0.5rem;
-        }
-
-        .newsletter button {
-            background-color: #FFD700;
-            color: #2B2D42;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .newsletter button:hover {
-            background-color: #E6C200;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .tools-grid, .blog-posts {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 3rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .top-header {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-
-            .main-header {
-                padding: 3rem 1rem;
-            }
-
-            .main-header h1 {
-                font-size: 2rem;
-            }
-
-            .tool-icons {
-                gap: 1.5rem;
-            }
-
-            .tool-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .tools-grid, .blog-posts {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .search-bar input {
-                padding: 1rem 1.5rem;
-                padding-right: 3rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIXDO - All-in-One Tool Hub</title>
+  <style>
+    /* Base Styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1e1e2f;
+      color: #eaeaea;
+    }
+
+    a {
+      color: #ffd700;
+      text-decoration: none;
+    }
+
+    .top-header {
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #1e1e2f;
+      padding: 1rem 2rem;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .logo .fix {
+      color: #1e1e2f;
+    }
+
+    .logo .do {
+      color: #2b2d42;
+    }
+
+    .nav-links a {
+      margin: 0 1rem;
+      font-weight: bold;
+      color: #1e1e2f;
+    }
+
+    .contact {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background-color: #2b2d42;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+
+    .hero-section h1 {
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .hero-section p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    .tool-icons {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+      gap: 1rem;
+    }
+
+    .tool-icon {
+      background-color: #3a3d5b;
+      color: #ffd700;
+      border-radius: 50%;
+      padding: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .search-bar {
+      width: 80%;
+      max-width: 400px;
+      padding: 0.8rem;
+      border-radius: 25px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    /* Tool Cards */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .tool-card {
+      background-color: #3a3d5b;
+      padding: 1.5rem;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.05);
+    }
+
+    .tool-card h2 {
+      margin-top: 0;
+    }
+
+    .tool-card button {
+      margin-top: 1rem;
+      background-color: #ffd700;
+      color: #1e1e2f;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .tool-card:hover {
+      background-color: #ffd700;
+      color: #1e1e2f;
+      box-shadow: 0 4px 16px rgba(255, 215, 0, 0.2);
+    }
+
+    .tool-card:hover h2,
+    .tool-card:hover p {
+      color: #1e1e2f;
+    }
+
+    .tool-card button:hover {
+      background-color: #e6c200;
+    }
+
+    /* Blogs */
+    .blogs {
+      padding: 2rem;
+      background-color: #2b2d42;
+      text-align: center;
+    }
+
+    .blogs h2 {
+      color: #ffd700;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .blog-card {
+      background-color: #3a3d5b;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+    }
+
+    /* Footer */
+    footer {
+      background-color: #1e1e2f;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .tool-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        margin-top: 0.5rem;
+      }
+
+      .search-bar {
+        width: 90%;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Top Header -->
-    <header class="top-header">
-        <div class="logo">FIXDO</div>
-        <nav class="nav-links">
-            <a href="#">Home</a>
-            <a href="#tools">Tools</a>
-            <a href="#blog">Blog</a>
-            <a href="#contact">Contact</a>
-        </nav>
-        <div class="contact-info">
-            <i class="fas fa-envelope"></i>
-            <span>alee.awanynot@gmail.com</span>
-        </div>
-    </header>
-
-    <!-- Main Header -->
-    <section class="main-header">
-        <h1>Your Daily Tools. All in One Place</h1>
-        <p>Convert, Calculate, Compress and simplify your everyday tasks — fast & free</p>
-        
-        <div class="tool-icons">
-            <div class="tool-icon" onclick="redirectToTool('Image Converter')"><i class="fas fa-image"></i></div>
-            <div class="tool-icon" onclick="redirectToTool('Video Converter')"><i class="fas fa-video"></i></div>
-            <div class="tool-icon" onclick="redirectToTool('PDF Converter')"><i class="fas fa-file-pdf"></i></div>
-            <div class="tool-icon" onclick="redirectToTool('Age Calculator')"><i class="fas fa-calculator"></i></div>
-            <div class="tool-icon" onclick="redirectToTool('Audio Trim')"><i class="fas fa-music"></i></div>
-        </div>
-
-        <div class="search-bar">
-            <input type="text" placeholder="Search for tools...">
-            <i class="fas fa-search"></i>
-        </div>
-    </section>
-
-    <!-- Tools Section -->
-    <div class="container">
-        <section id="tools">
-            <h2 class="section-title">Our Powerful Tools</h2>
-            <div class="tools-grid">
-                <!-- Image Converter Tool -->
-                <div class="tool-card">
-                    <h2>Image Converter</h2>
-                    <p>Convert between JPG, PNG, WEBP, and other formats with our fast, high-quality conversion tool.</p>
-                    <button class="btn" onclick="redirectToTool('Image Converter')">Use Tool</button>
-                </div>
-
-                <!-- Image Compressor Tool -->
-                <div class="tool-card">
-                    <h2>Image Compressor</h2>
-                    <p>Reduce image file sizes by up to 80% without noticeable quality loss. Optimize your website's performance.</p>
-                    <button class="btn" onclick="redirectToTool('Image Compressor')">Use Tool</button>
-                </div>
-
-                <!-- Image Crop Tool -->
-                <div class="tool-card">
-                    <h2>Image Crop</h2>
-                    <p>Precisely crop images to any dimension or aspect ratio. Create perfect thumbnails and profile pictures.</p>
-                    <button class="btn" onclick="redirectToTool('Image Crop')">Use Tool</button>
-                </div>
-
-                <!-- Video Converter Tool -->
-                <div class="tool-card">
-                    <h2>Video Converter</h2>
-                    <p>Convert videos between MP4, AVI, MOV, and other popular formats. Adjust resolution and quality settings.</p>
-                    <button class="btn" onclick="redirectToTool('Video Converter')">Use Tool</button>
-                </div>
-
-                <!-- Age Calculator Tool -->
-                <div class="tool-card">
-                    <h2>Age Calculator</h2>
-                    <p>Calculate exact age in years, months, and days. Useful for applications, forms, or just satisfying your curiosity.</p>
-                    <button class="btn" onclick="redirectToTool('Age Calculator')">Use Tool</button>
-                </div>
-
-                <!-- EMI Calculator Tool -->
-                <div class="tool-card">
-                    <h2>EMI Calculator</h2>
-                    <p>Calculate monthly loan payments with our EMI calculator. Understand how interest rates affect your payments.</p>
-                    <button class="btn" onclick="redirectToTool('EMI Calculator')">Use Tool</button>
-                </div>
-
-                <!-- SIP Calculator Tool -->
-                <div class="tool-card">
-                    <h2>SIP Calculator</h2>
-                    <p>Plan your investments with our SIP calculator. See how regular investments can grow over time.</p>
-                    <button class="btn" onclick="redirectToTool('SIP Calculator')">Use Tool</button>
-                </div>
-
-                <!-- Audio Trim Tool -->
-                <div class="tool-card">
-                    <h2>Audio Trim</h2>
-                    <p>Edit audio files by trimming unwanted sections. Create perfect sound clips for presentations or videos.</p>
-                    <button class="btn" onclick="redirectToTool('Audio Trim')">Use Tool</button>
-                </div>
-
-                <!-- PDF Converter Tool -->
-                <div class="tool-card">
-                    <h2>PDF Converter</h2>
-                    <p>Convert PDFs to Word, Excel, or images and vice versa. Maintain formatting and quality in all conversions.</p>
-                    <button class="btn" onclick="redirectToTool('PDF Converter')">Use Tool</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Blog Section -->
-        <section class="blog-section" id="blog">
-            <h2 class="section-title">Latest From Our Blog</h2>
-            <div class="blog-posts">
-                <!-- Blog Post 1 -->
-                <article class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Image Optimization" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">The Ultimate Guide to Image Optimization</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar-alt"></i> June 15, 2023</span>
-                            <span><i class="far fa-clock"></i> 5 min read</span>
-                        </div>
-                        <p class="blog-excerpt">Learn how proper image optimization can significantly improve your website's loading speed and user experience. Discover the best tools and techniques...</p>
-                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-
-                <!-- Blog Post 2 -->
-                <article class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Financial Tools" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">Financial Calculators: Your Money Management Allies</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar-alt"></i> May 28, 2023</span>
-                            <span><i class="far fa-clock"></i> 4 min read</span>
-                        </div>
-                        <p class="blog-excerpt">Explore how tools like EMI and SIP calculators can provide valuable insights for your financial planning. We break down complex calculations into simple...</p>
-                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-
-                <!-- Blog Post 3 -->
-                <article class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Productivity Tools" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">10 Web Tools That Will Boost Your Productivity</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar-alt"></i> July 5, 2023</span>
-                            <span><i class="far fa-clock"></i> 6 min read</span>
-                        </div>
-                        <p class="blog-excerpt">Discover the must-have web tools that can streamline your workflow. From document conversion to media editing, these tools will save you hours of work...</p>
-                        <a href="#" class="read-more">Read more <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </article>
-            </div>
-        </section>
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="logo"><span class="fix">FIX</span><span class="do">DO</span></div>
+    <nav class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Tools</a>
+      <a href="#">Contacts</a>
+    </nav>
+    <div class="contact">
+      <i class="fas fa-envelope"></i> <a href="mailto:alee.awanynot@gmail.com">alee.awanynot@gmail.com</a>
     </div>
+  </header>
 
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>FIXDO</h3>
-                <p>Your all-in-one solution for everyday tools. Fast, free, and easy to use.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="footer-column">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#tools">All Tools</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#contact">Contact Us</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Popular Tools</h3>
-                <ul>
-                    <li><a href="#">Image Converter</a></li>
-                    <li><a href="#">PDF Converter</a></li>
-                    <li><a href="#">Video Converter</a></li>
-                    <li><a href="#">EMI Calculator</a></li>
-                    <li><a href="#">Audio Trimmer</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Newsletter</h3>
-                <p>Subscribe to get updates on new tools and features</p>
-                <div class="newsletter">
-                    <input type="email" placeholder="Your email address">
-                    <button>Subscribe</button>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 FIXDO. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #FFD700;"></i> for you</p>
-        </div>
-    </footer>
+  <!-- Hero / Second Header -->
+  <section class="hero-section">
+    <h1>Your Daily Tools. All in One Place</h1>
+    <p>Convert, Calculate, Compress and simplify your everyday tasks — fast & free</p>
+    <div class="tool-icons">
+      <div class="tool-icon"><i class="fas fa-image"></i></div>
+      <div class="tool-icon"><i class="fas fa-compress-alt"></i></div>
+      <div class="tool-icon"><i class="fas fa-crop"></i></div>
+      <div class="tool-icon"><i class="fas fa-video"></i></div>
+      <div class="tool-icon"><i class="fas fa-calculator"></i></div>
+    </div>
+    <input class="search-bar" type="text" placeholder="Search for a tool...">
+  </section>
 
-    <script>
-        // JavaScript for button click functionality
-        function redirectToTool(toolName) {
-            alert(`Redirecting to ${toolName}...`);
-            // In a real implementation, this would navigate to the actual tool page
-            // window.location.href = `/tools/${toolName.toLowerCase().replace(' ', '-')}`;
-        }
+  <!-- Tool Cards Grid -->
+  <main class="tool-grid">
+    <!-- Repeatable Tool Card -->
+    <div class="tool-card">
+      <h2>Image Converter</h2>
+      <p>Convert your images to different formats in seconds.</p>
+      <button onclick="redirect('Image Converter')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Image Compressor</h2>
+      <p>Reduce image size without losing quality.</p>
+      <button onclick="redirect('Image Compressor')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Image Crop</h2>
+      <p>Crop images easily for social media or documents.</p>
+      <button onclick="redirect('Image Crop')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Video Converter</h2>
+      <p>Convert videos to your desired formats.</p>
+      <button onclick="redirect('Video Converter')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Age Calculator</h2>
+      <p>Quickly find out your exact age in detail.</p>
+      <button onclick="redirect('Age Calculator')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>EMI Calculator</h2>
+      <p>Calculate your monthly loan EMI with ease.</p>
+      <button onclick="redirect('EMI Calculator')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>SIP Calculator</h2>
+      <p>Estimate your SIP returns over time.</p>
+      <button onclick="redirect('SIP Calculator')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>Audio Trim</h2>
+      <p>Cut and trim audio files easily online.</p>
+      <button onclick="redirect('Audio Trim')">Use Tool</button>
+    </div>
+    <div class="tool-card">
+      <h2>PDF Converter</h2>
+      <p>Convert files to and from PDF effortlessly.</p>
+      <button onclick="redirect('PDF Converter')">Use Tool</button>
+    </div>
+  </main>
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+  <!-- Blog Section -->
+  <section class="blogs">
+    <h2>From Our Blog</h2>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <h3>5 Must-Have Tools for Students</h3>
+        <p>Explore essential tools that make studying and submitting assignments easier than ever.</p>
+      </div>
+      <div class="blog-card">
+        <h3>Image Compression Tips</h3>
+        <p>Learn how to reduce image sizes effectively without compromising quality.</p>
+      </div>
+      <div class="blog-card">
+        <h3>How SIP Calculators Help Plan Your Future</h3>
+        <p>Use SIP planning to prepare for retirement, children’s education, and more.</p>
+      </div>
+    </div>
+  </section>
 
-        // Search functionality
-        document.querySelector('.search-bar input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const searchTerm = this.value.trim();
-                if (searchTerm) {
-                    alert(`Searching for: ${searchTerm}`);
-                    // In a real implementation, this would perform the search
-                    // window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
-                }
-            }
-        });
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 FIXDO. All rights reserved. Crafted with ❤️ to simplify your day.</p>
+  </footer>
 
-        // Newsletter subscription
-        document.querySelector('.newsletter button').addEventListener('click', function() {
-            const email = document.querySelector('.newsletter input').value.trim();
-            if (email) {
-                alert(`Thank you for subscribing with ${email}!`);
-                document.querySelector('.newsletter input').value = '';
-            } else {
-                alert('Please enter a valid email address');
-            }
-        });
-    </script>
+  <script>
+    function redirect(toolName) {
+      alert(`Redirecting to ${toolName}`);
+    }
+  </script>
 </body>
+
 </html>
