@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIXDO - Your All-in-One Toolbox</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="logo">
+            <span style="color: #FFD700;">FIX</span><span style="color: #1E1E2F;">DO</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="contact-email">
+            <a href="mailto:alee.awanynot@gmail.com"><i class="fas fa-envelope"></i> alee.awanynot@gmail.com</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Your Daily Tools. All in One Place.</h1>
+        <p>Convert, Calculate, Compress, and simplify your everyday tasks — fast & free.</p>
+        <div class="tool-icons">
+            <div class="icon"><i class="fas fa-exchange-alt"></i></div>
+            <div class="icon"><i class="fas fa-compress-alt"></i></div>
+            <div class="icon"><i class="fas fa-crop-alt"></i></div>
+            <div class="icon"><i class="fas fa-video"></i></div>
+            <div class="icon"><i class="fas fa-calculator"></i></div>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search tools...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </section>
+
+    <!-- Tools Grid -->
+    <section class="tools-grid" id="tools">
+        <h2>Our Tools</h2>
+        <div class="grid-container">
+            <!-- Tool Cards -->
+            <a href="#" class="tool-card" onclick="redirectToTool('Image Converter')">
+                <div class="card-content">
+                    <h3>Image Converter</h3>
+                    <p>Convert images between JPG, PNG, WEBP, and more formats.</p>
+                    <button class="tool-btn">Use Tool</button>
+                </div>
+            </a>
+
+            <a href="#" class="tool-card" onclick="redirectToTool('Image Compressor')">
+                <div class="card-content">
+                    <h3>Image Compressor</h3>
+                    <p>Reduce image file size without losing quality.</p>
+                    <button class="tool-btn">Use Tool</button>
+                </div>
+            </a>
+
+            <a href="#" class="tool-card" onclick="redirectToTool('Image Crop')">
+                <div class="card-content">
+                    <h3>Image Crop</h3>
+                    <p>Crop and resize your images to perfect dimensions.</p>
+                    <button class="tool-btn">Use Tool</button>
+                </div>
+            </a>
+
+            <a href="#" class="tool-card" onclick="redirectToTool('Video Converter')">
+                <div class="card-content">
+                    <h3>Video Converter</h3>
+                    <p>Convert videos between MP4, AVI, MOV, and more.</p>
+                    <button class="tool-btn">Use Tool</button>
+                </div>
+            </a>
+
+            <a href="#" class="tool-card" onclick="redirectToTool('Age Calculator')">
+                <div class="card-content">
+                    <h3>Age Calculator</h3>
+                    <p>Calculate your exact age in years, months, and days.</p>
+                    <button class="tool-btn">Use Tool</button>
+                </div>
+            </a>
+
+            <a href="#" class="tool-card" onclick="redirectToTool('EMI Calculator')">
+                <div class="card-content">
+                    <h3>EMI Calculator</h3>
+                    <p>Calculate your Equated Monthly Installments for loans.</p>
+                    <button class="tool-btn">Use Tool</button>
+                </div>
+            </a>
+
+            <a href="#" class="tool-card" onclick="redirectToTool('SIP Calculator')">
+                <div class="card-content">
+                    <h3>SIP Calculator</h3>
+                    <p>Calculate returns on your Systematic Investment Plan.</p>
+                    <button class="tool-btn">Use Tool</button>
+                </div>
+            </a>
+
+            <a href="#" class="tool-card" onclick="redirectToTool('Audio Trim')">
+                <div class="card-content">
+                    <h3>Audio Trim</h3>
+                    <p>Trim and edit your audio files online.</p>
+                    <button class="tool-btn">Use Tool</button>
+                </div>
+            </a>
+
+            <a href="#" class="tool-card" onclick="redirectToTool('PDF Converter')">
+                <div class="card-content">
+                    <h3>PDF Converter</h3>
+                    <p>Convert PDFs to Word, Excel, JPG and vice versa.</p>
+                    <button class="tool-btn">Use Tool</button>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <h2>Latest Blogs</h2>
+        <div class="blog-container">
+            <div class="blog-card">
+                <img src="https://via.placeholder.com/300x200" alt="Blog Image">
+                <h3>How to Optimize Your Images for Web</h3>
+                <p>Learn the best practices for image optimization to improve your website's performance.</p>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+            <div class="blog-card">
+                <img src="https://via.placeholder.com/300x200" alt="Blog Image">
+                <h3>The Ultimate Guide to File Conversion</h3>
+                <p>Everything you need to know about converting between different file formats.</p>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+            <div class="blog-card">
+                <img src="https://via.placeholder.com/300x200" alt="Blog Image">
+                <h3>Financial Calculators Explained</h3>
+                <p>How to use financial calculators to plan your investments and loans.</p>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <span style="color: #FFD700;">FIX</span><span style="color: white;">DO</span>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#tools">Tools</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-envelope"></i> alee.awanynot@gmail.com</p>
+            </div>
+            <div class="footer-social">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 FIXDO. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
