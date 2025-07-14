@@ -1,0 +1,4 @@
+audio-trim-tool/
+├── index.html
+├── styles.css
+└── script.js
