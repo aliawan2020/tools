@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Trim Tool | FIXDO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span>FIX</span><span>DO</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tools</a></li>
+                <li><a href="#">Contacts</a></li>
+            </ul>
+        </nav>
+        <a href="mailto:alee.awanynot@gmail.com" class="contact-link">
+            <i class="fas fa-envelope"></i>
+            alee.awanynot@gmail.com
+        </a>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <div class="tool-header">
+                <h2><i class="fas fa-cut"></i> Audio Trim Tool</h2>
+            </div>
+            <div class="tool-content">
+                <div class="upload-section" id="dropArea">
+                    <i class="fas fa-music"></i>
+                    <h3>Upload Audio File</h3>
+                    <p>Drag & drop your audio file here or click to browse</p>
+                    <input type="file" id="fileInput" class="file-input" accept=".mp3,.wav,.aac,.ogg,.flac">
+                    <button class="upload-btn" id="uploadBtn">Choose File</button>
+                    <div class="file-info" id="fileInfo">No file selected</div>
+                </div>
+
+                <div class="error-message" id="errorMessage"></div>
+
+                <div id="trimControls" style="display: none;">
+                    <div class="controls">
+                        <div class="time-control">
+                            <label for="startTime">Start Time (HH:MM:SS)</label>
+                            <input type="text" id="startTime" class="time-input" value="00:00:00">
+                        </div>
+                        <div class="time-control">
+                            <label for="endTime">End Time (HH:MM:SS)</label>
+                            <input type="text" id="endTime" class="time-input" value="00:00:00">
+                        </div>
+                    </div>
+
+                    <div class="range-slider">
+                        <input type="range" id="trimStart" min="0" max="100" value="0">
+                        <input type="range" id="trimEnd" min="0" max="100" value="100">
+                    </div>
+
+                    <audio controls class="audio-player" id="audioPlayer"></audio>
+
+                    <button class="action-btn" id="trimBtn">Trim Audio</button>
+                    <button class="action-btn" id="resetBtn">Reset</button>
+
+                    <div class="processing" id="processingMessage">Processing...</div>
+                </div>
+
+                <div class="output-section" id="outputSection">
+                    <h3>Trimmed Audio Preview</h3>
+                    <audio controls class="audio-player" id="trimmedAudioPlayer"></audio>
+                    <button class="action-btn" id="downloadBtn">Download Trimmed Audio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
