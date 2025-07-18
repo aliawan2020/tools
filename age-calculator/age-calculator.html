@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator | FIXDO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --text-color: #616161;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --card-bg: #ffffff;
+            --header-bg: #4a6fa5;
+            --hover-bg: #e0e0e0;
+            --shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: white;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span:first-child {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo span:last-child {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .contact-link i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+        }
+
+        .tool-header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+            background-color: var(--hover-bg);
+            color: var(--dark-gray);
+        }
+
+        .tool-content {
+            padding: 2rem;
+        }
+
+        .calculator-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .input-group input, 
+        .input-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .time-input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .calculate-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+
+        .calculate-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .results h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .result-card {
+            padding: 1rem;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .result-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-card .label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .next-birthday {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .error-message {
+            color: #e53935;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .ad-space {
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border: 1px dashed #ccc;
+            text-align: center;
+            color: #888;
+        }
+
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .logo {
+                margin-bottom: 1rem;
+            }
+
+            nav ul {
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .time-input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-links a {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span>FIX</span><span>DO</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tools</a></li>
+                <li><a href="#">Contacts</a></li>
+            </ul>
+        </nav>
+        <a href="mailto:alee.awanynot@gmail.com" class="contact-link">
+            <i class="fas fa-envelope"></i>
+            alee.awanynot@gmail.com
+        </a>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <div class="tool-header">
+                <h2><i class="fas fa-birthday-cake"></i> Age Calculator</h2>
+            </div>
+            <div class="tool-content">
+                <form class="calculator-form" id="ageForm">
+                    <div class="input-group">
+                        <label for="birthDate">Date of Birth</label>
+                        <input type="date" id="birthDate" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>
+                            <input type="checkbox" id="includeTime"> Include exact time of birth
+                        </label>
+                    </div>
+
+                    <div class="time-input-group" id="timeInputGroup" style="display: none;">
+                        <div class="input-group">
+                            <label for="birthHour">Hour</label>
+                            <input type="number" id="birthHour" min="0" max="23" value="0" disabled>
+                        </div>
+                        <div class="input-group">
+                            <label for="birthMinute">Minute</label>
+                            <input type="number" id="birthMinute" min="0" max="59" value="0" disabled>
+                        </div>
+                    </div>
+
+                    <div class="error-message" id="errorMessage"></div>
+
+                    <button type="submit" class="calculate-btn">Calculate Age</button>
+                </form>
+
+                <div class="ad-space">
+                    Advertisement Space (Google Ads)
+                </div>
+
+                <div class="results" id="results">
+                    <h3>Your Age</h3>
+                    <div class="result-grid">
+                        <div class="result-card">
+                            <div class="value" id="years">0</div>
+                            <div class="label">Years</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="value" id="months">0</div>
+                            <div class="label">Months</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="value" id="days">0</div>
+                            <div class="label">Days</div>
+                        </div>
+                        <div class="result-card" id="hoursCard" style="display: none;">
+                            <div class="value" id="hours">0</div>
+                            <div class="label">Hours</div>
+                        </div>
+                        <div class="result-card" id="minutesCard" style="display: none;">
+                            <div class="value" id="minutes">0</div>
+                            <div class="label">Minutes</div>
+                        </div>
+                    </div>
+
+                    <div class="next-birthday" id="nextBirthday">
+                        Next birthday in: <span id="nextBirthdayDays">0</span> days
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <p>&copy; 2023 FIXDO Multi Tool Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const ageForm = document.getElementById('ageForm');
+            const birthDate = document.getElementById('birthDate');
+            const includeTime = document.getElementById('includeTime');
+            const timeInputGroup = document.getElementById('timeInputGroup');
+            const birthHour = document.getElementById('birthHour');
+            const birthMinute = document.getElementById('birthMinute');
+            const errorMessage = document.getElementById('errorMessage');
+            const results = document.getElementById('results');
+            
+            // Toggle time inputs
+            includeTime.addEventListener('change', function() {
+                if (this.checked) {
+                    timeInputGroup.style.display = 'grid';
+                    birthHour.disabled = false;
+                    birthMinute.disabled = false;
+                } else {
+                    timeInputGroup.style.display = 'none';
+                    birthHour.disabled = true;
+                    birthMinute.disabled = true;
+                }
+            });
+            
+            // Form submission
+            ageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculateAge();
+            });
+            
+            // Age calculation function
+            function calculateAge() {
+                // Reset error message
+                errorMessage.style.display = 'none';
+                
+                // Get input values
+                const dob = new Date(birthDate.value);
+                const now = new Date();
+                
+                // Validate date
+                if (isNaN(dob.getTime())) {
+                    showError('Please enter a valid date of birth');
+                    return;
+                }
+                
+                if (dob > now) {
+                    showError('Date of birth cannot be in the future');
+                    return;
+                }
+                
+                // Set time if included
+                if (includeTime.checked) {
+                    dob.setHours(parseInt(birthHour.value));
+                    dob.setMinutes(parseInt(birthMinute.value));
+                } else {
+                    // Default to midnight if time not included
+                    dob.setHours(0, 0, 0, 0);
+                }
+                
+                // Calculate age
+                let age = {};
+                let tempDate = new Date(dob);
+                
+                // Years
+                age.years = now.getFullYear() - dob.getFullYear();
+                
+                // Months
+                age.months = now.getMonth() - dob.getMonth();
+                if (age.months < 0 || (age.months === 0 && now.getDate() < dob.getDate())) {
+                    age.years--;
+                    age.months += 12;
+                }
+                
+                // Days
+                age.days = now.getDate() - dob.getDate();
+                if (age.days < 0) {
+                    const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                    age.days += lastMonth.getDate();
+                    age.months--;
+                    if (age.months < 0) {
+                        age.months += 12;
+                        age.years--;
+                    }
+                }
+                
+                // Hours and minutes (if time included)
+                if (includeTime.checked) {
+                    age.hours = now.getHours() - dob.getHours();
+                    age.minutes = now.getMinutes() - dob.getMinutes();
+                    
+                    if (age.minutes < 0) {
+                        age.minutes += 60;
+                        age.hours--;
+                    }
+                    
+                    if (age.hours < 0) {
+                        age.hours += 24;
+                        age.days--;
+                        
+                        if (age.days < 0) {
+                            const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                            age.days += lastMonth.getDate();
+                            age.months--;
+                            
+                            if (age.months < 0) {
+                                age.months += 12;
+                                age.years--;
+                            }
+                        }
+                    }
+                }
+                
+                // Calculate next birthday
+                const nextBirthday = new Date(now.getFullYear(), dob.getMonth(), dob.getDate());
+                if (nextBirthday < now) {
+                    nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+                }
+                const daysUntilBirthday = Math.ceil((nextBirthday - now) / (1000 * 60 * 60 * 24));
+                
+                // Update results
+                document.getElementById('years').textContent = age.years;
+                document.getElementById('months').textContent = age.months;
+                document.getElementById('days').textContent = age.days;
+                
+                if (includeTime.checked) {
+                    document.getElementById('hours').textContent = age.hours;
+                    document.getElementById('minutes').textContent = age.minutes;
+                    document.getElementById('hoursCard').style.display = 'block';
+                    document.getElementById('minutesCard').style.display = 'block';
+                } else {
+                    document.getElementById('hoursCard').style.display = 'none';
+                    document.getElementById('minutesCard').style.display = 'none';
+                }
+                
+                document.getElementById('nextBirthdayDays').textContent = daysUntilBirthday;
+                
+                // Show results
+                results.style.display = 'block';
+            }
+            
+            // Show error message
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                results.style.display = 'none';
+            }
+            
+            // Set default date to today - 25 years (for better UX)
+            const defaultDate = new Date();
+            defaultDate.setFullYear(defaultDate.getFullYear() - 25);
+            birthDate.valueAsDate = defaultDate;
+        });
+    </script>
+</body>
+</html>
