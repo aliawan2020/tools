@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIP Calculator | FIXDO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --text-color: #616161;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --card-bg: #ffffff;
+            --header-bg: #4a6fa5;
+            --hover-bg: #e0e0e0;
+            --shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: white;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span:first-child {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo span:last-child {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .contact-link i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+        }
+
+        .tool-header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+            background-color: var(--hover-bg);
+            color: var(--dark-gray);
+        }
+
+        .tool-content {
+            padding: 2rem;
+        }
+
+        .calculator-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .range-slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .range-slider input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .range-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .calculate-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+
+        .calculate-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .results h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .result-item .label {
+            font-weight: 500;
+        }
+
+        .result-item .value {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .chart-container {
+            margin-top: 2rem;
+            height: 250px;
+        }
+
+        .ad-space {
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border: 1px dashed #ccc;
+            text-align: center;
+            color: #888;
+        }
+
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .logo {
+                margin-bottom: 1rem;
+            }
+
+            nav ul {
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .calculator-form {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-links a {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span>FIX</span><span>DO</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tools</a></li>
+                <li><a href="#">Contacts</a></li>
+            </ul>
+        </nav>
+        <a href="mailto:alee.awanynot@gmail.com" class="contact-link">
+            <i class="fas fa-envelope"></i>
+            alee.awanynot@gmail.com
+        </a>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <div class="tool-header">
+                <h2><i class="fas fa-calculator"></i> SIP Calculator</h2>
+            </div>
+            <div class="tool-content">
+                <form class="calculator-form" id="sipForm">
+                    <div class="input-group">
+                        <label for="monthlyInvestment">Monthly Investment (₹)</label>
+                        <input type="number" id="monthlyInvestment" min="500" step="500" value="5000" required>
+                        <div class="range-slider">
+                            <input type="range" id="monthlyInvestmentRange" min="500" max="100000" step="500" value="5000">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="annualReturn">Expected Annual Return (%)</label>
+                        <input type="number" id="annualReturn" min="1" max="30" step="0.1" value="12" required>
+                        <div class="range-slider">
+                            <input type="range" id="annualReturnRange" min="1" max="30" step="0.1" value="12">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="investmentTenure">Investment Tenure (Years)</label>
+                        <input type="number" id="investmentTenure" min="1" max="40" step="1" value="10" required>
+                        <div class="range-slider">
+                            <input type="range" id="investmentTenureRange" min="1" max="40" step="1" value="10">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="calculate-btn">Calculate</button>
+                </form>
+
+                <div class="ad-space">
+                    Advertisement Space (Google Ads)
+                </div>
+
+                <div class="results" id="results">
+                    <h3>Investment Projection</h3>
+                    <div class="result-item">
+                        <span class="label">Monthly Investment:</span>
+                        <span class="value" id="resultMonthlyInvestment">₹5,000</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Total Investment:</span>
+                        <span class="value" id="resultTotalInvestment">₹6,00,000</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Estimated Returns:</span>
+                        <span class="value" id="resultEstimatedReturns">₹4,66,208</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Total Value:</span>
+                        <span class="value" id="resultTotalValue">₹10,66,208</span>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="investmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <p>&copy; 2023 FIXDO Multi Tool Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const sipForm = document.getElementById('sipForm');
+            const monthlyInvestment = document.getElementById('monthlyInvestment');
+            const monthlyInvestmentRange = document.getElementById('monthlyInvestmentRange');
+            const annualReturn = document.getElementById('annualReturn');
+            const annualReturnRange = document.getElementById('annualReturnRange');
+            const investmentTenure = document.getElementById('investmentTenure');
+            const investmentTenureRange = document.getElementById('investmentTenureRange');
+            const results = document.getElementById('results');
+            
+            // Sync range sliders with number inputs
+            monthlyInvestment.addEventListener('input', function() {
+                monthlyInvestmentRange.value = this.value;
+                calculateSIP();
+            });
+            
+            monthlyInvestmentRange.addEventListener('input', function() {
+                monthlyInvestment.value = this.value;
+                calculateSIP();
+            });
+            
+            annualReturn.addEventListener('input', function() {
+                annualReturnRange.value = this.value;
+                calculateSIP();
+            });
+            
+            annualReturnRange.addEventListener('input', function() {
+                annualReturn.value = this.value;
+                calculateSIP();
+            });
+            
+            investmentTenure.addEventListener('input', function() {
+                investmentTenureRange.value = this.value;
+                calculateSIP();
+            });
+            
+            investmentTenureRange.addEventListener('input', function() {
+                investmentTenure.value = this.value;
+                calculateSIP();
+            });
+            
+            // Form submission
+            sipForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculateSIP();
+            });
+            
+            // Initialize calculation on page load
+            calculateSIP();
+            
+            // SIP Calculation function
+            function calculateSIP() {
+                const P = parseFloat(monthlyInvestment.value);
+                const r = parseFloat(annualReturn.value) / 12 / 100;
+                const n = parseFloat(investmentTenure.value) * 12;
+                
+                // Calculate future value
+                const futureValue = P * ((Math.pow(1 + r, n) - 1) / r * (1 + r);
+                const totalInvestment = P * n;
+                const estimatedReturns = futureValue - totalInvestment;
+                
+                // Update results
+                document.getElementById('resultMonthlyInvestment').textContent = formatCurrency(P);
+                document.getElementById('resultTotalInvestment').textContent = formatCurrency(totalInvestment);
+                document.getElementById('resultEstimatedReturns').textContent = formatCurrency(estimatedReturns);
+                document.getElementById('resultTotalValue').textContent = formatCurrency(futureValue);
+                
+                // Show results
+                results.style.display = 'block';
+                
+                // Update chart
+                updateChart(P, r, n, futureValue);
+            }
+            
+            // Format currency
+            function formatCurrency(amount) {
+                return '₹' + amount.toFixed(0).replace(/\d(?=(\d{3})+$)/g, '$&,');
+            }
+            
+            // Chart initialization
+            let investmentChart;
+            
+            function updateChart(P, r, n, futureValue) {
+                const ctx = document.getElementById('investmentChart').getContext('2d');
+                
+                // Calculate yearly progression
+                const years = Math.ceil(n / 12);
+                const labels = Array.from({length: years}, (_, i) => `Year ${i+1}`);
+                
+                const investmentData = [];
+                const returnsData = [];
+                let totalInvestment = 0;
+                let totalValue = 0;
+                
+                for (let i = 1; i <= years; i++) {
+                    const months = i === years ? n % 12 || 12 : 12;
+                    totalInvestment += P * months;
+                    
+                    // Simplified calculation for yearly points
+                    const yearlyValue = P * ((Math.pow(1 + r, i * 12) - 1) / r * (1 + r);
+                    totalValue = Math.min(yearlyValue, futureValue);
+                    
+                    investmentData.push(totalInvestment);
+                    returnsData.push(totalValue - totalInvestment);
+                }
+                
+                // Destroy previous chart if exists
+                if (investmentChart) {
+                    investmentChart.destroy();
+                }
+                
+                // Create new chart
+                investmentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Invested Amount',
+                                data: investmentData,
+                                backgroundColor: '#4a6fa5',
+                                borderColor: '#4a6fa5',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Returns',
+                                data: returnsData,
+                                backgroundColor: '#4fc3f7',
+                                borderColor: '#4fc3f7',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                stacked: true,
+                            },
+                            y: {
+                                stacked: true,
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '₹' + (value / 1000).toFixed(0) + 'K';
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += formatCurrency(context.raw);
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
