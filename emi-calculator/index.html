@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMI Calculator | FIXDO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --text-color: #616161;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --card-bg: #ffffff;
+            --header-bg: #4a6fa5;
+            --hover-bg: #e0e0e0;
+            --shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: white;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span:first-child {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo span:last-child {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .contact-link i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .tool-header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(255, 215, 0, 0.3);
+            background-color: var(--hover-bg);
+            color: var(--dark-gray);
+        }
+
+        .tool-content {
+            padding: 2rem;
+        }
+
+        .calculator-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .range-slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .range-slider input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .range-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .tenure-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tenure-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .tenure-option input {
+            display: none;
+        }
+
+        .tenure-option label {
+            display: block;
+            padding: 0.8rem;
+            background-color: var(--light-gray);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tenure-option input:checked + label {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .emi-result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .emi-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .emi-label {
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .breakdown {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .breakdown-item {
+            padding: 1rem;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .breakdown-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .breakdown-label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .ad-space {
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border: 1px dashed #ccc;
+            text-align: center;
+            color: #888;
+        }
+
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .logo {
+                margin-bottom: 1rem;
+            }
+
+            nav ul {
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .tenure-options {
+                flex-direction: column;
+            }
+
+            .breakdown {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-links a {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span>FIX</span><span>DO</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tools</a></li>
+                <li><a href="#">Contacts</a></li>
+            </ul>
+        </nav>
+        <a href="mailto:alee.awanynot@gmail.com" class="contact-link">
+            <i class="fas fa-envelope"></i>
+            alee.awanynot@gmail.com
+        </a>
+    </header>
+
+    <div class="container">
+        <div class="tool-card">
+            <div class="tool-header">
+                <h2><i class="fas fa-calculator"></i> EMI Calculator</h2>
+            </div>
+            <div class="tool-content">
+                <form class="calculator-form" id="emiForm">
+                    <div class="input-group">
+                        <label for="loanAmount">Loan Amount (₹)</label>
+                        <input type="number" id="loanAmount" min="1000" step="1000" value="100000" required>
+                        <div class="range-slider">
+                            <input type="range" id="loanAmountRange" min="1000" max="10000000" step="1000" value="100000">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="interestRate">Interest Rate (% per annum)</label>
+                        <input type="number" id="interestRate" min="1" max="30" step="0.1" value="8.5" required>
+                        <div class="range-slider">
+                            <input type="range" id="interestRateRange" min="1" max="30" step="0.1" value="8.5">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Loan Tenure</label>
+                        <div class="tenure-options">
+                            <div class="tenure-option">
+                                <input type="radio" id="years" name="tenureType" value="years" checked>
+                                <label for="years">Years</label>
+                            </div>
+                            <div class="tenure-option">
+                                <input type="radio" id="months" name="tenureType" value="months">
+                                <label for="months">Months</label>
+                            </div>
+                        </div>
+                        <input type="number" id="loanTenure" min="1" max="30" value="5" required>
+                        <div class="range-slider">
+                            <input type="range" id="loanTenureRange" min="1" max="30" value="5">
+                        </div>
+                    </div>
+
+                    <div class="emi-result" id="emiResult">
+                        <div class="emi-amount" id="emiAmount">₹0</div>
+                        <div class="emi-label">Monthly Payment (EMI)</div>
+                    </div>
+
+                    <div class="ad-space">
+                        Advertisement Space (Google Ads)
+                    </div>
+
+                    <div class="breakdown" id="breakdown">
+                        <div class="breakdown-item">
+                            <div class="breakdown-value" id="totalPrincipal">₹0</div>
+                            <div class="breakdown-label">Total Principal</div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-value" id="totalInterest">₹0</div>
+                            <div class="breakdown-label">Total Interest</div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-value" id="totalPayment">₹0</div>
+                            <div class="breakdown-label">Total Payment</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <p>&copy; 2023 FIXDO Multi Tool Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const emiForm = document.getElementById('emiForm');
+            const loanAmount = document.getElementById('loanAmount');
+            const loanAmountRange = document.getElementById('loanAmountRange');
+            const interestRate = document.getElementById('interestRate');
+            const interestRateRange = document.getElementById('interestRateRange');
+            const loanTenure = document.getElementById('loanTenure');
+            const loanTenureRange = document.getElementById('loanTenureRange');
+            const tenureType = document.querySelector('input[name="tenureType"]:checked');
+            
+            // Sync range sliders with number inputs
+            loanAmount.addEventListener('input', function() {
+                loanAmountRange.value = this.value;
+                calculateEMI();
+            });
+            
+            loanAmountRange.addEventListener('input', function() {
+                loanAmount.value = this.value;
+                calculateEMI();
+            });
+            
+            interestRate.addEventListener('input', function() {
+                interestRateRange.value = this.value;
+                calculateEMI();
+            });
+            
+            interestRateRange.addEventListener('input', function() {
+                interestRate.value = this.value;
+                calculateEMI();
+            });
+            
+            loanTenure.addEventListener('input', function() {
+                loanTenureRange.value = this.value;
+                calculateEMI();
+            });
+            
+            loanTenureRange.addEventListener('input', function() {
+                loanTenure.value = this.value;
+                calculateEMI();
+            });
+            
+            // Tenure type change
+            document.querySelectorAll('input[name="tenureType"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'years') {
+                        loanTenure.max = 30;
+                        loanTenureRange.max = 30;
+                    } else {
+                        loanTenure.max = 360;
+                        loanTenureRange.max = 360;
+                    }
+                    calculateEMI();
+                });
+            });
+            
+            // Calculate EMI on page load
+            calculateEMI();
+            
+            // EMI Calculation function
+            function calculateEMI() {
+                const P = parseFloat(loanAmount.value);
+                const r = parseFloat(interestRate.value) / 12 / 100;
+                let n = parseFloat(loanTenure.value);
+                
+                // Convert to months if tenure is in years
+                if (document.getElementById('years').checked) {
+                    n = n * 12;
+                }
+                
+                // Calculate EMI using formula
+                const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+                const totalPayment = emi * n;
+                const totalInterest = totalPayment - P;
+                
+                // Update results
+                document.getElementById('emiAmount').textContent = formatCurrency(emi);
+                document.getElementById('totalPrincipal').textContent = formatCurrency(P);
+                document.getElementById('totalInterest').textContent = formatCurrency(totalInterest);
+                document.getElementById('totalPayment').textContent = formatCurrency(totalPayment);
+            }
+            
+            // Format currency
+            function formatCurrency(amount) {
+                return '₹' + amount.toFixed(0).replace(/\d(?=(\d{3})+$)/g, '$&,');
+            }
+        });
+    </script>
+</body>
+</html>
