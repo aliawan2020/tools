@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Cropper | FIXDO Multi Tool Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #a0a0a0;
+            --header-bg: #2c3e50;
+            --accent-color: #3498db;
+            --tool-card-bg: #f8f9fa;
+            --hover-card-bg: #e9ecef;
+            --hover-text: #333333;
+            --button-hover: #2980b9;
+            --shadow: rgba(255, 215, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo .fix {
+            color: #3498db;
+        }
+
+        .logo .do {
+            color: #2ecc71;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .contact-link:hover {
+            color: var(--accent-color);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .tool-header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 0;
+        }
+
+        .tool-card {
+            background-color: var(--tool-card-bg);
+            border-radius: 5px;
+            box-shadow: 0 4px 15px var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px var(--shadow);
+            background-color: var(--hover-card-bg);
+            color: var(--hover-text);
+        }
+
+        .tool-content {
+            padding: 30px;
+        }
+
+        .cropper-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-section:hover {
+            border-color: var(--accent-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .ratio-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ratio-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .ratio-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ratio-option:hover {
+            border-color: var(--accent-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .ratio-option.selected {
+            border-color: var(--accent-color);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .crop-section {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        #imageToCrop {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 3px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--button-hover);
+        }
+
+        .btn-secondary {
+            background-color: #f1f1f1;
+            color: #555;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        .preview-section {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .preview-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-container {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--accent-color);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .status-message {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .ratio-options {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .image-container {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 20px;
+            }
+
+            .nav-links {
+                gap: 10px;
+                font-size: 14px;
+            }
+
+            .contact-link span {
+                display: none;
+            }
+
+            .tool-content {
+                padding: 20px;
+            }
+
+            .ratio-options {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .upload-section {
+                padding: 20px;
+            }
+
+            .image-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <h1><span class="fix">FIX</span><span class="do">DO</span></h1>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Tools</a>
+            <a href="#">Contacts</a>
+        </nav>
+        <a href="mailto:alee.awanynot@gmail.com" class="contact-link">
+            <i class="fas fa-envelope"></i>
+            <span>alee.awanynot@gmail.com</span>
+        </a>
+    </header>
+
+    <div class="main-container">
+        <div class="tool-card">
+            <h2 class="tool-header">
+                <i class="fas fa-crop-alt"></i> Image Cropper
+            </h2>
+            <div class="tool-content">
+                <div class="cropper-container">
+                    <div class="upload-section" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <h3>Upload Your Image</h3>
+                        <p>Supported formats: PNG, JPG, JPEG, BMP, GIF, TIFF, WEBP</p>
+                        <input type="file" id="fileInput" class="file-input" accept=".png,.jpg,.jpeg,.bmp,.gif,.tiff,.webp">
+                        <button class="btn btn-primary" id="uploadBtn">Select Image</button>
+                        <div class="file-info" id="fileInfo"></div>
+                    </div>
+
+                    <div class="ratio-section">
+                        <h3>Select Aspect Ratio</h3>
+                        <div class="ratio-options">
+                            <div class="ratio-option" data-ratio="4/3">
+                                <i class="fas fa-crop"></i>
+                                <span>4:3</span>
+                            </div>
+                            <div class="ratio-option" data-ratio="16/9">
+                                <i class="fas fa-crop"></i>
+                                <span>16:9</span>
+                            </div>
+                            <div class="ratio-option" data-ratio="16/10">
+                                <i class="fas fa-crop"></i>
+                                <span>16:10</span>
+                            </div>
+                            <div class="ratio-option" data-ratio="3/2">
+                                <i class="fas fa-crop"></i>
+                                <span>3:2</span>
+                            </div>
+                            <div class="ratio-option" data-ratio="1/1">
+                                <i class="fas fa-crop"></i>
+                                <span>1:1</span>
+                            </div>
+                            <div class="ratio-option" data-ratio="free">
+                                <i class="fas fa-crop"></i>
+                                <span>Freeform</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="crop-section" id="cropSection">
+                        <h3>Crop Your Image</h3>
+                        <div class="image-container">
+                            <img id="imageToCrop">
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="cropBtn" disabled>Crop Image</button>
+                        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+                    </div>
+
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar">
+                            <div class="progress" id="progressBar"></div>
+                        </div>
+                        <div class="status-message" id="statusMessage">Processing your image...</div>
+                    </div>
+
+                    <div class="error-message" id="errorMessage"></div>
+
+                    <div class="preview-section" id="previewSection">
+                        <h3>Cropped Image Preview</h3>
+                        <div class="preview-container">
+                            <img class="preview-image" id="previewImage" alt="Cropped Image Preview">
+                        </div>
+                        <a class="btn btn-primary" id="downloadBtn">
+                            <i class="fas fa-download"></i> Download Image
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const fileInfo = document.getElementById('fileInfo');
+            const ratioOptions = document.querySelectorAll('.ratio-option');
+            const cropSection = document.getElementById('cropSection');
+            const imageToCrop = document.getElementById('imageToCrop');
+            const cropBtn = document.getElementById('cropBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const statusMessage = document.getElementById('statusMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const previewSection = document.getElementById('previewSection');
+            const previewImage = document.getElementById('previewImage');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            // Variables
+            let selectedFile = null;
+            let selectedRatio = null;
+            let cropper = null;
+            let croppedBlob = null;
+            let originalImageData = null;
+
+            // Event Listeners
+            uploadArea.addEventListener('click', () => fileInput.click());
+            uploadBtn.addEventListener('click', () => fileInput.click());
+            
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            ratioOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    ratioOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedRatio = option.dataset.ratio;
+                    
+                    // Update cropper aspect ratio if already initialized
+                    if (cropper) {
+                        if (selectedRatio === 'free') {
+                            cropper.setAspectRatio(NaN);
+                        } else {
+                            const [width, height] = selectedRatio.split('/');
+                            cropper.setAspectRatio(width / height);
+                        }
+                    }
+                    
+                    updateCropButtonState();
+                });
+            });
+            
+            cropBtn.addEventListener('click', cropImage);
+            resetBtn.addEventListener('click', resetCropper);
+            downloadBtn.addEventListener('click', downloadImage);
+
+            // Functions
+            function handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                // Check file type
+                const validExtensions = ['.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff', '.webp'];
+                const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+                
+                if (!validExtensions.includes(fileExt)) {
+                    showError('Unsupported file type. Please upload an image with one of these extensions: PNG, JPG, JPEG, BMP, GIF, TIFF, WEBP');
+                    return;
+                }
+
+                // Check file size (limit to 10MB for client-side processing)
+                if (file.size > 10 * 1024 * 1024) {
+                    showError('File size exceeds 10MB limit. Please choose a smaller image.');
+                    return;
+                }
+
+                selectedFile = file;
+                
+                // Display file info
+                fileInfo.innerHTML = `
+                    <strong>${file.name}</strong><br>
+                    ${formatFileSize(file.size)} • ${fileExt.toUpperCase().replace('.', '')}
+                `;
+                
+                // Create image preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imageToCrop.src = e.target.result;
+                    
+                    // Initialize cropper after image loads
+                    imageToCrop.onload = function() {
+                        originalImageData = {
+                            width: this.naturalWidth,
+                            height: this.naturalHeight,
+                            aspectRatio: this.naturalWidth / this.naturalHeight
+                        };
+                        
+                        fileInfo.innerHTML += ` • ${this.naturalWidth}×${this.naturalHeight}px`;
+                        
+                        // Initialize cropper
+                        initCropper();
+                        
+                        // Show crop section
+                        cropSection.style.display = 'flex';
+                    };
+                };
+                reader.readAsDataURL(file);
+                
+                hideError();
+                updateCropButtonState();
+            }
+
+            function initCropper() {
+                // Destroy previous cropper instance if exists
+                if (cropper) {
+                    cropper.destroy();
+                }
+                
+                // Initialize new cropper
+                cropper = new Cropper(imageToCrop, {
+                    aspectRatio: NaN, // Freeform by default
+                    viewMode: 1,
+                    autoCropArea: 0.8,
+                    responsive: true,
+                    restore: false,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                    ready: function() {
+                        // Set initial aspect ratio if one was already selected
+                        if (selectedRatio && selectedRatio !== 'free') {
+                            const [width, height] = selectedRatio.split('/');
+                            cropper.setAspectRatio(width / height);
+                        }
+                    }
+                });
+            }
+
+            function updateCropButtonState() {
+                cropBtn.disabled = !(selectedFile && selectedRatio);
+            }
+
+            function cropImage() {
+                if (!selectedFile || !selectedRatio || !cropper) return;
+
+                try {
+                    // Show progress
+                    cropBtn.disabled = true;
+                    statusMessage.textContent = 'Processing your image...';
+                    progressContainer.style.display = 'flex';
+                    progressBar.style.width = '50%';
+                    
+                    // Get cropped canvas
+                    const canvas = cropper.getCroppedCanvas({
+                        width: cropper.getCropBoxData().width,
+                        height: cropper.getCropBoxData().height,
+                        minWidth: 50,
+                        minHeight: 50,
+                        maxWidth: 4096,
+                        maxHeight: 4096,
+                        fillColor: '#fff',
+                        imageSmoothingEnabled: true,
+                        imageSmoothingQuality: 'high',
+                    });
+                    
+                    progressBar.style.width = '80%';
+                    
+                    // Convert canvas to blob
+                    canvas.toBlob((blob) => {
+                        progressBar.style.width = '100%';
+                        
+                        if (!blob) {
+                            throw new Error('Cropping failed');
+                        }
+                        
+                        croppedBlob = blob;
+                        
+                        // Show preview and download button
+                        showPreview(croppedBlob);
+                        
+                        cropBtn.disabled = false;
+                    }, selectedFile.type || 'image/jpeg', 0.9);
+                    
+                } catch (error) {
+                    showError('Cropping failed. Please try again.');
+                    console.error(error);
+                    cropBtn.disabled = false;
+                }
+            }
+
+            function showPreview(blob) {
+                progressContainer.style.display = 'none';
+                previewSection.style.display = 'flex';
+                
+                const imageUrl = URL.createObjectURL(blob);
+                previewImage.src = imageUrl;
+                
+                // Set download link
+                downloadBtn.href = imageUrl;
+                
+                // Generate filename with dimensions
+                const dimensions = cropper.getCropBoxData();
+                const ext = selectedFile.name.split('.').pop().toLowerCase();
+                downloadBtn.download = `cropped_${Math.round(dimensions.width)}x${Math.round(dimensions.height)}.${ext}`;
+            }
+
+            function downloadImage(e) {
+                if (!croppedBlob) {
+                    e.preventDefault();
+                    return;
+                }
+                
+                // Clean up after download
+                setTimeout(() => {
+                    URL.revokeObjectURL(downloadBtn.href);
+                }, 100);
+            }
+
+            function resetCropper() {
+                // Reset file input
+                fileInput.value = '';
+                selectedFile = null;
+                originalImageData = null;
+                
+                // Reset ratio selection
+                ratioOptions.forEach(opt => opt.classList.remove('selected'));
+                selectedRatio = null;
+                
+                // Reset UI
+                uploadArea.innerHTML = `
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h3>Upload Your Image</h3>
+                    <p>Supported formats: PNG, JPG, JPEG, BMP, GIF, TIFF, WEBP</p>
+                    <button class="btn btn-primary" id="uploadBtn">Select Image</button>
+                    <div class="file-info" id="fileInfo"></div>
+                `;
+                
+                // Re-attach event listener to the new button
+                document.getElementById('uploadBtn').addEventListener('click', () => fileInput.click());
+                
+                // Destroy cropper if exists
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null;
+                }
+                
+                // Reset image
+                imageToCrop.src = '';
+                previewImage.src = '';
+                
+                // Hide sections
+                cropSection.style.display = 'none';
+                previewSection.style.display = 'none';
+                progressContainer.style.display = 'none';
+                
+                // Reset download button
+                downloadBtn.href = '#';
+                cropBtn.disabled = true;
+                hideError();
+            }
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+
+            function hideError() {
+                errorMessage.style.display = 'none';
+            }
+
+            // Helper function
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + ' KB';
+                else return (bytes / 1048576).toFixed(2) + ' MB';
+            }
+        });
+    </script>
+</body>
+</html>
