@@ -28,7 +28,7 @@ body {
 .header {
     background-color: var(--header-bg);
     color: white;
-    padding: 60px 5% 60px;
+    padding: 20px 5% 60px;
     text-align: center;
     position: relative;
     overflow: hidden;
