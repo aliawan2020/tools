@@ -28,7 +28,7 @@ body {
 .header {
     background-color: var(--header-bg);
     color: white;
-    padding: 10px 5% 30px;
+    padding: 5px 5% 25px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -40,7 +40,7 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 8px;
+    height: 6px;
     background: linear-gradient(90deg, #3498db, #2ecc71, #e74c3c, #f39c12, #9b59b6);
 }
 
@@ -48,7 +48,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .logo {
@@ -120,97 +120,6 @@ body {
 .contact-dropdown:hover .dropdown-content {
     display: block;
 }
-
-.header-content {
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.header-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: white;
-}
-
-.header-subtitle {
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-    opacity: 0.9;
-}
-
-.tool-icons {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin: 30px 0;
-    flex-wrap: wrap;
-}
-
-.tool-icon {
-    width: 60px;
-    height: 60px;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.tool-icon:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-}
-
-.tool-icon i {
-    font-size: 24px;
-    color: var(--header-bg);
-}
-
-.search-container {
-    max-width: 600px;
-    margin: 30px auto 0;
-    position: relative;
-}
-
-.search-input {
-    width: 100%;
-    padding: 15px 20px;
-    border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: all 0.3s;
-}
-
-.search-input:focus {
-    outline: none;
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-}
-
-.search-btn {
-    padding: 12px 25px;
-    top: 4px;
-    right: 4px;
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.search-btn:hover {
-    background-color: var(--accent-hover);
-}
-
 .main-container {
     max-width: 1200px;
     margin: 40px auto;
