@@ -22,7 +22,7 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    line-height: 1.0;
+    line-height: 1.6;
 }
 
 .header {
@@ -48,7 +48,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .logo {
@@ -58,8 +58,8 @@ body {
 }
 
 .logo h1 {
-    font-size: 55px;
-    font-weight: 1000;
+    font-size: 50px;
+    font-weight: 700;
 }
 
 .logo .fix {
@@ -218,11 +218,11 @@ body {
 }
 
 .ad-container {
-    width: 100%;
+    width: 99%;
     background-color: #f1f1f1;
     padding: 15px;
     text-align: center;
-    margin: 20px 0;
+    margin: 20px 10;
     border-radius: 5px;
 }
 
