@@ -7,6 +7,7 @@
     --hover-card-bg: #e9ecef;
     --hover-text: #333333;
     --shadow: rgba(255, 215, 0, 0.2);
+    --footer-bg: #c5e7e8
     --footer-text: #ffffff;
 }
 
@@ -263,7 +264,7 @@ body {
 }
 
 .footer {
-    background-color: var();
+    background-color: var(--footer-bg);
     color: var(--footer-text);
     padding: 50px 0 20px;
 }
