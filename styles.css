@@ -33,24 +33,6 @@ body {
     position: relative;
     overflow: hidden;
 }
-
-.header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: linear-gradient(90deg, #3498db, #2ecc71, #e74c3c, #f39c12, #9b59b6);
-}
-
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
 .logo {
     display: flex;
     align-items: center;
