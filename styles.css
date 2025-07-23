@@ -122,14 +122,14 @@ body {
 }
 
 .header-content {
-    max-width: 800px;
+    max-width: 100px;
     margin: 0 auto;
 }
 
 .header-title {
     font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: white;
 }
 
