@@ -28,7 +28,7 @@ body {
 .header {
     background-color: var(--header-bg);
     color: white;
-    padding: 20px 5% 40px;
+    padding: 10px 5% 30px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -40,7 +40,7 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 10px;
+    height: 8px;
     background: linear-gradient(90deg, #3498db, #2ecc71, #e74c3c, #f39c12, #9b59b6);
 }
 
@@ -48,7 +48,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 400px;
+    margin-bottom: 40px;
 }
 
 .logo {
@@ -58,8 +58,8 @@ body {
 }
 
 .logo h1 {
-    font-size: 35px;
-    font-weight: 700;
+    font-size: 30px;
+    font-weight: 400;
 }
 
 .logo .fix {
@@ -122,7 +122,7 @@ body {
 }
 
 .header-content {
-    max-width: 1000px;
+    max-width: 700px;
     margin: 0 auto;
 }
 
@@ -135,7 +135,7 @@ body {
 
 .header-subtitle {
     font-size: 1.1rem;
-    margin-bottom: 30px;
+    margin-bottom: 12px;
     opacity: 0.9;
 }
 
