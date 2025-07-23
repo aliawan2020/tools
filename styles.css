@@ -263,7 +263,7 @@ body {
 }
 
 .footer {
-    background-color: var(--footer-bg);
+    background-color: var();
     color: var(--footer-text);
     padding: 50px 0 20px;
 }
